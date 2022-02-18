@@ -1,8 +1,16 @@
 import React from 'react';
-import { screen } from '@testing-library/react';
+import { screen, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { createMemoryHistory } from 'history';
+import { Router } from 'react-router-dom';
 import App from '../App';
-import renderWithRouter from '../services/renderWithRouter';
+
+const renderWithRouter = (component) => {
+  const history = createMemoryHistory();
+  return ({
+    ...render(<Router history={ history }>{component}</Router>), history,
+  });
+};
 
 describe('Testa os links no topo da aplicação e o correto roteamento.',
   () => {
@@ -25,6 +33,7 @@ describe('Testa os links no topo da aplicação e o correto roteamento.',
       const { pathname } = history.location;
       expect(pathname).toBe('/about');
     });
+
     test(
       'O terceiro link deve possuir Favorite Pokémons e rotear para "./favorites"',
       () => {
