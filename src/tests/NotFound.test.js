@@ -2,9 +2,9 @@ import React from 'react';
 import { screen, render } from '@testing-library/react';
 import NotFound from '../components/NotFound';
 
-describe('Teste o componente <NotFound.js />.',
+describe('Testa o componente <NotFound.js />.',
   () => {
-    test('Teste se página contém um heading h2 com o texto correto', () => {
+    test('Testa se página contém um heading h2 com o texto correto', () => {
       render(<NotFound />);
 
       const h2 = screen.getByRole(
