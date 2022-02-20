@@ -30,6 +30,10 @@ describe('Testa o componente <Pokedex.js />', () => {
   test('Testa se é exibido o próximo Pokémon da lista corretamente.', () => {
     renderWithRouter(<App />);
 
+    // O botão All precisa estar sempre visível.
+    const buttonAll = screen.getByRole('button', { name: /all/i });
+    expect(buttonAll).toBeInTheDocument();
+
     const testIdName = 'pokemon-name';
 
     const fistPokemon = screen.getByText(pokemons[0].name);
@@ -41,12 +45,11 @@ describe('Testa o componente <Pokedex.js />', () => {
     const nextPokemon = screen.getByRole('button', { name: /próximo pokémon/i });
     expect(nextPokemon).toBeInTheDocument();
 
-    for (let index = 1; index <= pokemons.length; index += 1) {
-      userEvent.click(nextPokemon);
-
+    for (let index = 0; index <= pokemons.length; index += 1) {
       if (index < pokemons.length) { // Os próximos Pokémons da lista devem ser mostrados, um a um, ao clicar sucessivamente no botão
         const pokemon = screen.getByText(pokemons[index].name);
         expect(pokemon).toBeInTheDocument();
+        userEvent.click(nextPokemon);
 
         const onlyOnePokemon2 = screen.getAllByTestId(testIdName);
         expect(onlyOnePokemon2).toHaveLength(1);
@@ -61,6 +64,10 @@ describe('Testa o componente <Pokedex.js />', () => {
 
   test('Teste se a Pokédex tem os botões de filtro.', () => {
     renderWithRouter(<App />);
+
+    // O botão All precisa estar sempre visível
+    const buttonAll = screen.getByRole('button', { name: /all/i });
+    expect(buttonAll).toBeInTheDocument();
 
     for (let index = 0; index < pokemons.length; index += 1) { // O texto do botão deve corresponder ao nome do tipo, ex. Psychic;
       const nextPokemon = screen.getByRole('button', { name: pokemons[index].type });
@@ -87,6 +94,7 @@ describe('Testa o componente <Pokedex.js />', () => {
       const nextPokemon = screen.getByRole('button', { name: /próximo pokémon/i });
       expect(nextPokemon).toBeInTheDocument();
 
+      // Refatorar lógica index iniciando com "1"!
       for (let index = 1; index <= filteredPokemons.length; index += 1) {
         userEvent.click(typeButton);
 
@@ -105,6 +113,7 @@ describe('Testa o componente <Pokedex.js />', () => {
   test('Teste se a Pokédex contém um botão para resetar o filtro', () => {
     renderWithRouter(<App />);
 
+    // O botão All precisa estar sempre visível
     const buttonAll = screen.getByRole('button', { name: /all/i });
     const buttonPsychic = screen.getByRole('button', { name: /psychic/i });
     userEvent.click(buttonPsychic);
@@ -112,12 +121,11 @@ describe('Testa o componente <Pokedex.js />', () => {
 
     const nextPokemon = screen.getByRole('button', { name: /próximo pokémon/i });
 
-    for (let index = 1; index <= pokemons.length; index += 1) {
-      userEvent.click(nextPokemon);
-
+    for (let index = 0; index <= pokemons.length; index += 1) {
       if (index < pokemons.length) {
         const pokemon = screen.getByText(pokemons[index].name);
         expect(pokemon).toBeInTheDocument();
+        userEvent.click(nextPokemon);
       } else {
         const pokemon = screen.getByText(pokemons[0].name);
         expect(pokemon).toBeInTheDocument();
